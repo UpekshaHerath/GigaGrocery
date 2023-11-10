@@ -22,18 +22,45 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public void createProduct(ProductRequest productRequest) {
-        Product product = Product.builder()
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
-                .build();
-        productRepository.save(product);
-        log.info("Product {} is saved", product.getId());
+        try {
+            if (productRepository.existsByName(productRequest.getName())) {
+                log.error("Product with name {} already exists", productRequest.getName());
+                throw new RuntimeException("Product already exists");
+            }
+        } catch (Exception e) {
+            log.error("Product with name {} already exists", productRequest.getName());
+        }
+
+        try {
+            Product product = Product.builder()
+                    .name(productRequest.getName())
+                    .description(productRequest.getDescription())
+                    .price(productRequest.getPrice())
+                    .build();
+            productRepository.save(product);
+            log.info("Product {} is saved", product.getId());
+        } catch (Exception e) {
+            log.error("Error while saving the product to the database.");
+        }
     }
 
     public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(this::mapToProductResponse).toList();
+        try {
+            if (productRepository.findAll().isEmpty()) {
+                log.error("No products found");
+                throw new RuntimeException("No products found");
+            }
+        } catch (Exception e) {
+            log.error("No products found");
+        }
+
+        try {
+            List<Product> products = productRepository.findAll();
+            return products.stream().map(this::mapToProductResponse).toList();
+        } catch (Exception e) {
+            log.error("Error while fetching the products from the database.");
+            return null;
+        }
     }
 
     private ProductResponse mapToProductResponse(Product product) {
@@ -46,8 +73,16 @@ public class ProductService {
     }
 
     public void deleteProduct(String id) {
-        productRepository.deleteById(String.valueOf(Integer.parseInt(id)));
-        log.info("Product with id {} is deleted", id);
+        try {
+            if (productRepository.existsById(id)) {
+                productRepository.deleteById(id);
+                log.info("Product with id {} is deleted", id);
+            } else {
+                throw new RuntimeException("Product not found");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
     public void updateProduct(String id, ProductRequest productRequest) {
@@ -65,5 +100,7 @@ public class ProductService {
             log.error("Product with id {} is not found", id);
         }
     }
+
+
 
 }
