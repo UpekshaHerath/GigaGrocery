@@ -7,14 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StockResponse {
-    private String stockID;
-    private String date;
+    private LocalDateTime date;
     private int quantity;
     private BigDecimal price;
 }

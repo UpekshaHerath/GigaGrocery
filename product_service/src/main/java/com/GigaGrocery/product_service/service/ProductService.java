@@ -3,6 +3,7 @@ package com.GigaGrocery.product_service.service;
 import com.GigaGrocery.product_service.dto.ProductRequest;
 import com.GigaGrocery.product_service.dto.ProductResponse;
 import com.GigaGrocery.product_service.model.Product;
+import com.GigaGrocery.product_service.model.Stock;
 import com.GigaGrocery.product_service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final List< Stock > stocks;
 
     public void createProduct(ProductRequest productRequest) {
         try {
@@ -35,7 +37,7 @@ public class ProductService {
             Product product = Product.builder()
                     .name(productRequest.getName())
                     .description(productRequest.getDescription())
-                    .price(productRequest.getPrice())
+                    .stocks(stocks)
                     .build();
             productRepository.save(product);
             log.info("Product {} is saved", product.getId());
@@ -68,7 +70,6 @@ public class ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .price(product.getPrice())
                 .build();
     }
 
@@ -92,7 +93,7 @@ public class ProductService {
                     .id(productInDb.getId())
                     .name(productRequest.getName())
                     .description(productRequest.getDescription())
-                    .price(productRequest.getPrice())
+                    .stocks(productInDb.getStocks())
                     .build();
             productRepository.save(product);
             log.info("Product {} is updated", product.getId());

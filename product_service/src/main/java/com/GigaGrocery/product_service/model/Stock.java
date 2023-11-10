@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class Stock {
-    @Id
-    private String stockID;
-    private String date;
+    private LocalDateTime date;
     private int quantity;
     private BigDecimal price;
 }

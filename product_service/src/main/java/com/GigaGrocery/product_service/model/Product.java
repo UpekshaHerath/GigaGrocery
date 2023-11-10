@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /***
  * Defines the data models or entities for the application
@@ -23,7 +24,7 @@ public class Product {
     private String id;
     private String name;
     private String description;
-    private BigDecimal price;
+    private List<Stock> stocks;
 }
 //    stockID
 //    date
