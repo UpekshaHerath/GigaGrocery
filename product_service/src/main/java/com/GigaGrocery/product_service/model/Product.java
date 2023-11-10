@@ -25,3 +25,7 @@ public class Product {
     private String description;
     private BigDecimal price;
 }
+//    stockID
+//    date
+//    quantity
+//    price

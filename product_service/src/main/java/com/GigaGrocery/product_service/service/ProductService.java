@@ -44,4 +44,28 @@ public class ProductService {
                 .price(product.getPrice())
                 .build();
     }
+
+    public void deleteProduct(String id) {
+        productRepository.deleteById(String.valueOf(Integer.parseInt(id)));
+        log.info("Product with id {} is deleted", id);
+    }
+
+    public void updateProduct(String id, ProductRequest productRequest) {
+        try {
+            Product productInDb = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+
+            Product product = Product.builder()
+                    .id(productInDb.getId())
+                    .name(productRequest.getName())
+                    .description(productRequest.getDescription())
+                    .price(productRequest.getPrice())
+                    .build();
+
+            productRepository.save(product);
+            log.info("Product {} is updated", product.getId());
+        } catch (Exception e) {
+            log.error("Product with id {} is not found", id);
+        }
+
+    }
 }

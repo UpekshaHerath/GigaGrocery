@@ -8,7 +8,7 @@ public class ProductServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProductServiceApplication.class, args);
-		// mongodb+srv://upeksha:22058abcd@cluster0.14ytvct.mongodb.net/
+
 	}
 
 }
