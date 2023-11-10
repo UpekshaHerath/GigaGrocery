@@ -163,4 +163,14 @@ public class StockService {
             log.error(e.getMessage());
         }
     }
+
+    public void reduceStock(String productId, int itemCount) {
+        try {
+            if (productRepository.existsById(productId)) {
+
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 }

@@ -64,6 +64,7 @@ public class StockController {
     }
 
     /**
+     * Restore an order of a product
      * Delete a specific stock of a product
      * priority goes to old stocks
      * @param productId
@@ -73,6 +74,12 @@ public class StockController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteStock(@PathVariable String productId, @PathVariable String stockId) {
         stockService.deleteStock(productId, stockId);
+    }
+
+    @DeleteMapping("/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void reduceStock(@PathVariable String productId, @PathVariable int itemCount) {
+        stockService.reduceStock(productId, itemCount);
     }
 
 }
