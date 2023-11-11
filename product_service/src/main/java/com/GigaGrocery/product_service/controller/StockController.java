@@ -76,7 +76,7 @@ public class StockController {
         stockService.deleteStock(productId, stockId);
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("reduce/{productId}/{itemCount}")
     @ResponseStatus(HttpStatus.OK)
     public void reduceStock(@PathVariable String productId, @PathVariable int itemCount) {
         stockService.reduceStock(productId, itemCount);

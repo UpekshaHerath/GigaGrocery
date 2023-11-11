@@ -167,10 +167,63 @@ public class StockService {
     public void reduceStock(String productId, int itemCount) {
         try {
             if (productRepository.existsById(productId)) {
+                Optional<Product> product = productRepository.findById(productId);
+                // get the list of stocks from the product
+                List<Stock> stocks = product.get().getStocks();
+                // check that stock is present or not
+                if (stocks.size() == 0) {
+                    throw new RuntimeException("No products to issue");
+                } else {
+                    log.info("Stocks are present");
+                    int numberOfItemsNeed = itemCount;
 
+                    if (getTotalNumberOfItemsInStocks(productId) < itemCount) {
+                        throw new RuntimeException("Not enough items in the stocks");
+                    }
+
+                    List<Stock> sortedStocksOnDate = stocks;
+                    sortedStocksOnDate.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+                    for (Stock stock : sortedStocksOnDate) {
+                        if (stock.getQuantity() >= numberOfItemsNeed) {
+                            stock.setQuantity(stock.getQuantity() - numberOfItemsNeed);
+                            numberOfItemsNeed = 0;
+                            break;
+                        } else {
+                            numberOfItemsNeed -= stock.getQuantity();
+                            stock.setQuantity(0);
+                        }
+                    }
+                }
+                // then we can update the product
+                product.get().setStocks(stocks);
+                // then we can save the product
+                productRepository.save(product.get());
+                log.info("Stocks are reduced. Process completed successfully");
+            } else {
+                throw new RuntimeException("Product does not exist");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+        }
+    }
+
+    private int getTotalNumberOfItemsInStocks(String productId) {
+        try {
+            if (productRepository.existsById(productId)) {
+                Optional<Product> product = productRepository.findById(productId);
+                // get the list of stocks from the product
+                List<Stock> stocks = product.get().getStocks();
+
+                int totalNumberOfItemsInStock = 0;
+                for (Stock stock : stocks) {
+                    totalNumberOfItemsInStock += stock.getQuantity();
+                }
+                return totalNumberOfItemsInStock;
+            }
+            return 0;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return 0;
         }
     }
 }
