@@ -22,19 +22,14 @@ public class StockService {
         try {
             if (productRepository.existsById(productID)) {
                 Optional<Product> product = productRepository.findById(productID);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-                // then we can create a new stock
                 Stock stock = Stock.builder()
                         .date(LocalDateTime.now())
                         .quantity(stockRequest.getQuantity())
                         .price(stockRequest.getPrice())
                         .build();
-                // add the new stock to the list
                 stocks.add(stock);
-                // then we can update the product
                 product.get().setStocks(stocks);
-                // then we can save the product
                 productRepository.save(product.get());
                 log.info("Stock is saved");
             } else {
@@ -50,29 +45,22 @@ public class StockService {
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
                 log.info(stocks.toString());
-                // check that stock is present or not
                 if (stocks.size() == 0) {
                     throw new RuntimeException("Stock does not exist");
                 } else {
-                    // check that stock is present or not
                     if (stocks.size() <= Integer.parseInt(stockId)) {
                         throw new RuntimeException("Stock does not exist");
                     }
                 }
-                // then we can create a new stock depending on the given values
                 Stock stock = Stock.builder()
                         .date(stocks.get(Integer.parseInt(stockId)).getDate())
                         .quantity(stockRequest.getQuantity())
                         .price(stockRequest.getPrice())
                         .build();
-                // replace that stock with the new stock
                 stocks.set(Integer.parseInt(stockId), stock);
-                // then we can update the product
                 product.get().setStocks(stocks);
-                // then we can save the product
                 productRepository.save(product.get());
                 log.info("Stock {} of product {} updated", stockId, productId);
             } else {
@@ -83,17 +71,15 @@ public class StockService {
         }
     }
 
+
+
     public List<Stock> getStock(String productId) {
         log.info("HI HI HI");
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-
                 log.info(stocks.toString());
-
-                // check that stock is present or not
                 if (stocks.size() == 0) {
                     log.info("this");
                     throw new RuntimeException("There are no any stocks in this product");
@@ -113,13 +99,10 @@ public class StockService {
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-                // check that stock is present or not
                 if (stocks.size() == 0) {
                     throw new RuntimeException("Stock does not exist");
                 } else {
-                    // check that stock is present or not
                     if (stocks.size() <= Integer.parseInt(stockId)) {
                         throw new RuntimeException("Invalid Stock ID");
                     }
@@ -138,22 +121,16 @@ public class StockService {
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-                // check that stock is present or not
                 if (stocks.size() == 0) {
                     throw new RuntimeException("Stock does not exist");
                 } else {
-                    // check that stock is present or not
                     if (stocks.size() <= Integer.parseInt(stockId)) {
                         throw new RuntimeException("Invalid Stock ID");
                     }
                 }
-                // remove the stock from the list
                 stocks.remove(Integer.parseInt(stockId));
-                // then we can update the product
                 product.get().setStocks(stocks);
-                // then we can save the product
                 productRepository.save(product.get());
                 log.info("Stock {} of product {} deleted", stockId, productId);
             } else {
@@ -168,19 +145,15 @@ public class StockService {
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-                // check that stock is present or not
                 if (stocks.size() == 0) {
                     throw new RuntimeException("No products to issue");
                 } else {
                     log.info("Stocks are present");
                     int numberOfItemsNeed = itemCount;
-
                     if (getTotalNumberOfItemsInStocks(productId) < itemCount) {
                         throw new RuntimeException("Not enough items in the stocks");
                     }
-
                     List<Stock> sortedStocksOnDate = stocks;
                     sortedStocksOnDate.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
                     for (Stock stock : sortedStocksOnDate) {
@@ -194,9 +167,7 @@ public class StockService {
                         }
                     }
                 }
-                // then we can update the product
                 product.get().setStocks(stocks);
-                // then we can save the product
                 productRepository.save(product.get());
                 log.info("Stocks are reduced. Process completed successfully");
             } else {
@@ -211,9 +182,7 @@ public class StockService {
         try {
             if (productRepository.existsById(productId)) {
                 Optional<Product> product = productRepository.findById(productId);
-                // get the list of stocks from the product
                 List<Stock> stocks = product.get().getStocks();
-
                 int totalNumberOfItemsInStock = 0;
                 for (Stock stock : stocks) {
                     totalNumberOfItemsInStock += stock.getQuantity();

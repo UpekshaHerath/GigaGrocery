@@ -26,7 +26,3 @@ public class Product {
     private String description;
     private List<Stock> stocks;
 }
-//    stockID
-//    date
-//    quantity
-//    price

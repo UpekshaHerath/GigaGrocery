@@ -23,24 +23,41 @@ public class ProductController {
 
     private final ProductService productService;
 
+    /**
+     * Create a new product
+     * @param productRequest
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(@RequestBody ProductRequest productRequest) {
         productService.createProduct(productRequest);
     }
 
+    /**
+     * Get all the products
+     * @return
+     */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    /**
+     * Get a specific product
+     * @param id
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
     }
 
+    /**
+     * Update a specific product
+     * @param id
+     * @param productRequest
+     */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateProduct(@PathVariable String id, @RequestBody ProductRequest productRequest) {

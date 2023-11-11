@@ -16,8 +16,8 @@ import java.util.List;
  * implement separate two classes for Product Request and Response.
  */
 
-@Data // use to create getters and setters
-@Builder // to craete the builder method
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductRequest {

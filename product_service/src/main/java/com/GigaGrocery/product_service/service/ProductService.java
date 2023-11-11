@@ -32,7 +32,6 @@ public class ProductService {
         } catch (Exception e) {
             log.error("Product with name {} already exists", productRequest.getName());
         }
-
         try {
             Product product = Product.builder()
                     .name(productRequest.getName())
@@ -55,7 +54,6 @@ public class ProductService {
         } catch (Exception e) {
             log.error("No products found");
         }
-
         try {
             List<Product> products = productRepository.findAll();
             return products.stream().map(this::mapToProductResponse).toList();
@@ -101,7 +99,4 @@ public class ProductService {
             log.error("Product with id {} is not found", id);
         }
     }
-
-
-
 }

@@ -44,7 +44,7 @@ public class StockController {
     /**
      * Get all the stocks of a product
      * @param productId
-     * @return
+     * @return List of stocks
      */
     @GetMapping("/{productId}")
     @ResponseStatus(HttpStatus.OK)
@@ -56,6 +56,7 @@ public class StockController {
      * Get a specific stock of a product
      * @param productId
      * @param stockId
+     * @return Stock
      */
     @GetMapping("/{productId}/{stockId}")
     @ResponseStatus(HttpStatus.OK)
@@ -76,6 +77,11 @@ public class StockController {
         stockService.deleteStock(productId, stockId);
     }
 
+    /**
+     * Reduce the stock of a product
+     * @param productId
+     * @param itemCount
+     */
     @DeleteMapping("reduce/{productId}/{itemCount}")
     @ResponseStatus(HttpStatus.OK)
     public void reduceStock(@PathVariable String productId, @PathVariable int itemCount) {
